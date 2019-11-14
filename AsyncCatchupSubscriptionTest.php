@@ -20,7 +20,7 @@ use Throwable;
 require 'vendor/autoload.php';
 require 'eventstore.php';
 
-$options = getopt('', ['stream:', 'checkpoint:', 'connection:']);
+$options = getopt('', ['stream:', 'checkpoint:']);
 if (!isset($options['stream'])) {
 	echo 'No --stream option set' . PHP_EOL;
 	exit();
@@ -35,17 +35,6 @@ if (!isset($options['checkpoint'])) {
 	Assert::that($checkpoint)->greaterOrEqualThan(0);
 }
 
-if (!isset($options['connection'])) {
-	$connection = 'eventStoreAsync';
-} else {
-	$connection = $options['connection'];
-}
-
-if (!isset($options['verbose'])) {
-	$verbose = true;
-} else {
-	$verbose = (bool)$options['verbose'];
-}
 echo '--------------------------------------------------------------------------------' . PHP_EOL;
 echo ' NOTE: If you want to run a category stream you MUST prefix it with `$ce-`!' . PHP_EOL;
 echo '--------------------------------------------------------------------------------' . PHP_EOL;

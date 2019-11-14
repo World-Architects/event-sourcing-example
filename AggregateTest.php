@@ -19,8 +19,8 @@ use Psa\EventSourcing\EventStoreIntegration\EventReflectionTranslator;
 $eventStore = EventStoreConnectionFactory::create(
 	new ConnectionSettings(
 		new EndPoint('127.0.0.1', 8012),
-		!empty($config['schema']) ?: \Prooph\EventStore\Transport\Http\EndpointExtensions::HTTP_SCHEMA,
-		new \Prooph\EventStore\UserCredentials('admin', 'changeit')
+		EndpointExtensions::HTTP_SCHEMA,
+		new UserCredentials('admin', 'changeit')
 	)
 );
 
@@ -56,5 +56,7 @@ $aggregateId = (string)$account->aggregateId();
 $aggregate = $repository->getAggregate($aggregateId);
 
 echo 'Read aggregate ' . $aggregate->aggregateId() . PHP_EOL;
+echo 'Dumping aggregate object :' . PHP_EOL;
+echo PHP_EOL;
 
-var_dump($aggregate);
+echo var_export($aggregate, true);

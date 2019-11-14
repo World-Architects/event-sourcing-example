@@ -15,11 +15,6 @@ class Account
 	const AGGREGATE_TYPE = 'Account';
 
 	/**
-	 * @var \App\Accounting\AccountId
-	 */
-	protected $id;
-
-	/**
 	 * @var string
 	 */
 	protected $name;
@@ -40,7 +35,7 @@ class Account
 	protected $aggregateVersion = 0;
 
 	/*
-	 * @var string
+	 * @var \App\Accounting\AccountId
 	 */
 	protected $aggregateId;
 
@@ -90,7 +85,7 @@ class Account
 	 */
 	public function aggregateId(): string
 	{
-		return (string)$this->id;
+		return (string)$this->aggregateId;
 	}
 
 	/**
@@ -98,7 +93,7 @@ class Account
 	 */
 	public function whenAccountCreated(AccountCreated $event): void
 	{
-		$this->id = $event->accountId();
+		$this->aggregateId = $event->aggregateId();
 		$this->name = $event->name();
 		$this->description = $event->description();
 	}

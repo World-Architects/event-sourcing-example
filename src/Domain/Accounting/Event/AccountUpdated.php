@@ -25,16 +25,16 @@ class AccountUpdated
 		string $description
 	) {
 		$event = new self();
-		$event->accountId = (string)$accountId;
+		$event->aggregateId = (string)$accountId;
 		$event->name = $name;
 		$event->description = $description;
 
 		return $event;
 	}
 
-	public function accountId(): AccountId
+	public function aggregateId(): AccountId
 	{
-		return AccountId::fromString($this->accountId);
+		return AccountId::fromString($this->aggregateId);
 	}
 
 	public function name(): string
