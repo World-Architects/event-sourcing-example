@@ -25,7 +25,7 @@ class AccountUpdated
 		string $description
 	) {
 		$event = new self();
-		$event->accountId = $accountId;
+		$event->accountId = (string)$accountId;
 		$event->name = $name;
 		$event->description = $description;
 
@@ -34,7 +34,7 @@ class AccountUpdated
 
 	public function accountId(): AccountId
 	{
-		return $this->accountId;
+		return AccountId::fromString($this->accountId);
 	}
 
 	public function name(): string

@@ -118,7 +118,7 @@ class Account
 	public function toArray()
 	{
 		return [
-			'id' => (string)$this->id,
+			'accountId' => (string)$this->id,
 			'name' => $this->name,
 			'description' => $this->description,
 		];

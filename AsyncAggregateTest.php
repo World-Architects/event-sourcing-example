@@ -2,7 +2,7 @@
 require 'vendor/autoload.php';
 
 use App\Domain\Accounting\Account;
-use App\Infrastructure\Repository\AccountRepository;
+use App\Infrastructure\Repository\AsyncAccountRepository;
 use Amp\Loop;
 use Prooph\EventStoreClient\EventStoreConnectionFactory;
 use Prooph\EventStore\EndPoint;
@@ -25,12 +25,12 @@ Amp\Loop::run(function() {
 		echo 'Connection closed' . PHP_EOL;
 	});
 
-	$eventStore->connectAsync();
+	yield $eventStore->connectAsync();
 
 	/*******************************************************************************
 	 * Setting up the repository object
 	 ******************************************************************************/
-	$repository = new AccountRepository(
+	$repository = new AsyncAccountRepository(
 		$eventStore,
 		new AggregateReflectionTranslator(),
 		new EventReflectionTranslator()
@@ -54,10 +54,13 @@ Amp\Loop::run(function() {
 	/*******************************************************************************
 	 * Restore the aggregate
 	 ******************************************************************************/
-	$aggregateId = (string)$account->aggregateId();
-	$aggregate = $repository->getAggregate($aggregateId);
+	Loop::delay(3000, function () use ($account, $repository) {
+		$aggregateId = (string)$account->aggregateId();
+		$aggregate = $repository->getAggregate($aggregateId);
+		var_dump($aggregate);
+	});
 
-	var_dump($aggregate);
-
-	// Loop::stop();
+	Loop::delay(3000, function () {
+		Loop::stop();
+	});
 });

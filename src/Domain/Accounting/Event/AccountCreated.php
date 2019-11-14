@@ -13,8 +13,6 @@ class AccountCreated
 	const EVENT_TYPE = 'Accounting.Account.created';
 
 	protected $accountId;
-	protected $accountNumber;
-	protected $currency;
 	protected $name;
 	protected $description;
 
@@ -24,7 +22,7 @@ class AccountCreated
 		string $description
 	) {
 		$event = new self();
-		$event->accountId = $accountId;
+		$event->accountId = (string)$accountId;
 		$event->name = $name;
 		$event->description = $description;
 
@@ -33,7 +31,7 @@ class AccountCreated
 
 	public function accountId(): AccountId
 	{
-		return $this->accountId;
+		return AccountId::fromString($this->accountId);
 	}
 
 	public function name(): string
