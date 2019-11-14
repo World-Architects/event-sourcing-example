@@ -29,7 +29,7 @@ if (!isset($options['stream'])) {
 }
 
 if (!isset($options['checkpoint'])) {
-	$checkpoint = 0;
+	$checkpoint = null;
 } else {
 	$checkpoint = (int)$options['checkpoint'];
 	Assert::that($checkpoint)->greaterOrEqualThan(0);
