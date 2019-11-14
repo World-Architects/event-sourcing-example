@@ -7,8 +7,11 @@
     }
   ],
   "require": {
-    "psa/event-sourcing": "dev-async",
+    "guzzlehttp/guzzle": "^6.4",
+    "php-http/guzzle6-adapter": "^2.0",
     "prooph/event-store-client": "dev-master",
+    "prooph/event-store-http-client": "dev-master",
+    "psa/event-sourcing": "dev-async",
     "psr/log": "^1.1"
   },
   "autoload": {
@@ -23,5 +26,8 @@
     }
   ],
   "minimum-stability": "dev",
-  "prefer-stable": true
+  "prefer-stable": true,
+  "config": {
+    "sort-packages": true
+  }
 }
