@@ -29,9 +29,9 @@ php .\CatchupSubscriptionTest.php --stream='<stream-name>'
 Basically the same as above just that these files implement the async client library.
 
 ```sh
-php AsyncAggregateTest.php
+php .\AsyncAggregateTest.php
 ```
 
 ```sh
-php AsyncCatchupSubscription.php --stream $ce-Account
+php .\AsyncCatchupSubscription.php --stream='<stream-name>'
 ```

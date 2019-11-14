@@ -49,18 +49,16 @@ Amp\Loop::run(function() {
 		'Updated description'
 	);
 
+	/**
+	 * @var $result \Prooph\EventStore\WriteResult
+	 */
 	$repository->saveAggregate($account);
-
 	/*******************************************************************************
 	 * Restore the aggregate
 	 ******************************************************************************/
-	Loop::delay(3000, function () use ($account, $repository) {
-		$aggregateId = (string)$account->aggregateId();
-		$aggregate = $repository->getAggregate($aggregateId);
-		var_dump($aggregate);
-	});
+	$aggregateId = (string)$account->aggregateId();
+	$aggregate = $repository->getAggregate($aggregateId);
+	var_dump($aggregate);
 
-	Loop::delay(3000, function () {
-		Loop::stop();
-	});
+	Loop::stop();
 });

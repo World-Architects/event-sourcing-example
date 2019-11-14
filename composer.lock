@@ -1781,7 +1781,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:World-Architects/event-sourcing.git",
-                "reference": "ded26bc4d5ac9b101739a252ae8f7deeccc19115"
+                "reference": "5b79c2d79c23bfc6db5c8ebdfc6bb0296008dfc7"
             },
             "require": {
                 "beberlei/assert": "^3.2",
@@ -1838,7 +1838,7 @@
                 }
             ],
             "description": "Event Sourcing Library",
-            "time": "2019-11-14T11:03:16+00:00"
+            "time": "2019-11-14T23:19:01+00:00"
         },
         {
             "name": "psr/http-client",
