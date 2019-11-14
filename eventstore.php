@@ -17,5 +17,3 @@ $eventStore->onClosed(function (): void {
 });
 
 $eventStore->connectAsync();
-
-sleep(5);
