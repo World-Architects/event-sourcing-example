@@ -36,6 +36,7 @@ $repository = new AccountRepository(
 /*******************************************************************************
  * Create, modify and save the aggregate (with two events)
  ******************************************************************************/
+echo 'Creating aggregate...' . PHP_EOL;
 $account = Account::create(
 	'Test',
 	'Test'
@@ -45,8 +46,13 @@ $account->update(
 	'Updated name',
 	'Updated description'
 );
+echo 'Aggregate created' . PHP_EOL;
+echo PHP_EOL;
 
+echo 'Saving aggregate ' . (string)$account->aggregateId() . '...' . PHP_EOL;
 $repository->saveAggregate($account);
+echo 'Aggregated saved' . PHP_EOL;
+echo PHP_EOL;
 
 /*******************************************************************************
  * Restore the aggregate
