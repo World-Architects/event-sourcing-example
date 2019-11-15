@@ -15,10 +15,11 @@ use Prooph\EventStore\Async\LiveProcessingStartedOnCatchUpSubscription;
 use Prooph\EventStore\CatchUpSubscriptionSettings;
 use Prooph\EventStore\ResolvedEvent;
 use Prooph\EventStore\SubscriptionDropReason;
+use Prooph\EventStore\EndPoint;
+use Prooph\EventStoreClient\EventStoreConnectionFactory;
 use Throwable;
 
 require 'vendor/autoload.php';
-require 'eventstore.php';
 
 $options = getopt('', ['stream:', 'checkpoint:']);
 if (!isset($options['stream'])) {
@@ -39,10 +40,22 @@ echo '--------------------------------------------------------------------------
 echo ' NOTE: If you want to run a category stream you MUST prefix it with `$ce-`!' . PHP_EOL;
 echo '--------------------------------------------------------------------------------' . PHP_EOL;
 
-$connection = $eventStore;
+Loop::run(function () use ($stream, $checkpoint) {
+	$eventStore = EventStoreConnectionFactory::createFromEndPoint(
+		new EndPoint('127.0.0.1', 1113)
+	);
 
-Loop::run(function () use ($connection, $stream, $checkpoint) {
-	yield $connection->subscribeToStreamFromAsync(
+	$eventStore->onConnected(function (): void {
+		echo 'Connected' . PHP_EOL;
+	});
+
+	$eventStore->onClosed(function (): void {
+		echo 'Connection closed' . PHP_EOL;
+	});
+
+	yield $eventStore->connectAsync();
+
+	yield $eventStore->subscribeToStreamFromAsync(
 		$stream,
 		$checkpoint,
 		CatchUpSubscriptionSettings::default(),

@@ -42,7 +42,7 @@ echo '--------------------------------------------------------------------------
  ******************************************************************************/
 $eventStore = EventStoreConnectionFactory::create(
 	new ConnectionSettings(
-		new EndPoint('127.0.0.1', 8012),
+		new EndPoint('127.0.0.1', 2212),
 		EndpointExtensions::HTTP_SCHEMA,
 		new UserCredentials('admin', 'changeit')
 	)

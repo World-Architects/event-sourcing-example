@@ -6,6 +6,15 @@
  * Demonstrate minimal / none dependencies on the domain for event sourcing
  * Demonstrate projections
 
+## Event Store Settings
+
+All the code uses the Event Store default credentials:
+
+ * **username**: admin
+ * **password**: changeit
+ * **HTTP port**: 2212
+ * **TCP/IP**: 1113
+
 ## Shell Scripts
 
 ### HTTP Client
