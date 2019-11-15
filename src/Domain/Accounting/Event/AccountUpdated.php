@@ -12,12 +12,14 @@ class AccountUpdated
 {
 	const EVENT_TYPE = 'Accounting.Account.updated';
 
-	protected $accountId;
+	protected $aggregateId;
 	protected $name;
 	protected $description;
 
 	/**
-	 *
+	 * @param AccountId $accountId Account Id
+	 * @param string $name Name
+	 * @param string $description Description
 	 */
 	public static function create(
 		AccountId $accountId,
@@ -32,16 +34,25 @@ class AccountUpdated
 		return $event;
 	}
 
-	public function aggregateId(): AccountId
+	/**
+	 * @return string
+	 */
+	public function aggregateId(): string
 	{
-		return AccountId::fromString($this->aggregateId);
+		return $this->aggregateId;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function name(): string
 	{
 		return $this->name;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function description(): string
 	{
 		return $this->description;

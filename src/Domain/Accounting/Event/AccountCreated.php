@@ -16,6 +16,11 @@ class AccountCreated
 	protected $name;
 	protected $description;
 
+	/**
+	 * @param AccountId $accountId Account Id
+	 * @param string $name Name
+	 * @param string $description Description
+	 */
 	public static function create(
 		AccountId $accountId,
 		string $name,
@@ -29,16 +34,25 @@ class AccountCreated
 		return $event;
 	}
 
-	public function aggregateId(): AccountId
+	/**
+	 * @return string
+	 */
+	public function aggregateId()
 	{
-		return AccountId::fromString($this->aggregateId);
+		return (string)$this->aggregateId;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function name(): string
 	{
 		return $this->name;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function description(): string
 	{
 		return $this->description;
