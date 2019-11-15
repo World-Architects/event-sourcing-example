@@ -1781,7 +1781,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:World-Architects/event-sourcing.git",
-                "reference": "5b79c2d79c23bfc6db5c8ebdfc6bb0296008dfc7"
+                "reference": "0227a7cec07f4d4cc023d8863fcbe224ec22e2f0"
             },
             "require": {
                 "beberlei/assert": "^3.2",
@@ -1801,7 +1801,7 @@
                 "prooph/event-store-client": "dev-master as 1.0",
                 "prooph/event-store-http-client": "dev-master",
                 "psr/cache": "^1.0",
-                "squizlabs/php_codesniffer": "^3.4"
+                "squizlabs/php_codesniffer": "^3.5"
             },
             "type": "library",
             "autoload": {
@@ -1838,7 +1838,7 @@
                 }
             ],
             "description": "Event Sourcing Library",
-            "time": "2019-11-14T23:19:01+00:00"
+            "time": "2019-11-15T14:39:41+00:00"
         },
         {
             "name": "psr/http-client",

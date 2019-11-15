@@ -15,6 +15,8 @@ All the code uses the Event Store default credentials:
  * **HTTP port**: 2212
  * **TCP/IP**: 1113
 
+If you need further assistence with the event store please check the official documentation https://eventstore.org/docs/.
+
 ## Shell Scripts
 
 ### HTTP Client
