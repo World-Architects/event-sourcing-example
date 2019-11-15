@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "341ec8b8776218babec0e4b7dd4a12cf",
+    "content-hash": "4e31cf0f405b3503c82334244730fb88",
     "packages": [
         {
             "name": "amphp/amp",
@@ -1777,7 +1777,7 @@
         },
         {
             "name": "psa/event-sourcing",
-            "version": "dev-async",
+            "version": "dev-develop",
             "source": {
                 "type": "git",
                 "url": "git@github.com:World-Architects/event-sourcing.git",

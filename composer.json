@@ -11,7 +11,7 @@
     "php-http/guzzle6-adapter": "^2.0",
     "prooph/event-store-client": "dev-master",
     "prooph/event-store-http-client": "dev-master",
-    "psa/event-sourcing": "dev-async",
+    "psa/event-sourcing": "dev-develop",
     "psr/log": "^1.1"
   },
   "autoload": {
