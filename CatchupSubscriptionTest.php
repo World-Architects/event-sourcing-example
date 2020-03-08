@@ -1,10 +1,7 @@
 <?php
 require 'vendor/autoload.php';
+require 'config/config.php';
 
-use App\Domain\Accounting\Account;
-use App\Infrastructure\Repository\AccountRepository;
-use GuzzleHttp\Client as GuzzleClient;
-use Http\Adapter\Guzzle6\Client;
 use Prooph\EventStoreHttpClient\EventStoreConnectionFactory;
 use Prooph\EventStoreHttpClient\ConnectionSettings;
 use Prooph\EventStore\EndPoint;
@@ -16,8 +13,6 @@ use Prooph\EventStore\ResolvedEvent;
 use Prooph\EventStore\LiveProcessingStartedOnCatchUpSubscription;
 use Prooph\EventStore\CatchUpSubscriptionDropped;
 use Prooph\EventStore\SubscriptionDropReason;
-use Psa\EventSourcing\EventStoreIntegration\AggregateReflectionTranslator;
-use Psa\EventSourcing\EventStoreIntegration\EventReflectionTranslator;
 
 $options = getopt('', ['stream:', 'checkpoint:']);
 if (!isset($options['stream'])) {
@@ -42,9 +37,9 @@ echo '--------------------------------------------------------------------------
  ******************************************************************************/
 $eventStore = EventStoreConnectionFactory::create(
 	new ConnectionSettings(
-		new EndPoint('127.0.0.1', 2212),
+		new EndPoint($config['eventstore']['host'], $config['eventstore']['port']),
 		EndpointExtensions::HTTP_SCHEMA,
-		new UserCredentials('admin', 'changeit')
+		new UserCredentials($config['eventstore']['user'], $config['eventstore']['pass'])
 	)
 );
 

@@ -6,13 +6,16 @@ namespace App\Domain\Accounting;
 use App\Domain\Accounting\Event\AccountCreated;
 use App\Domain\Accounting\Event\AccountUpdated;
 use Iterator;
+use Psa\EventSourcing\Aggregate\AggregateTrait;
 
 /**
  * Account Aggregate
  */
 class Account
 {
-	const AGGREGATE_TYPE = 'Account';
+	const AGGREGATE_TYPE = ['Account' => Account::class];
+
+	use AggregateTrait;
 
 	/**
 	 * @var string
@@ -24,20 +27,8 @@ class Account
 	 */
 	protected $description;
 
-	/**
-	 * @var array
-	 */
-	protected $events = [];
-
-	/**
-	 * @var int
-	 */
-	protected $aggregateVersion = 0;
-
-	/*
-	 * @var \App\Accounting\AccountId
-	 */
-	protected $aggregateId;
+	private function __construct() {
+	}
 
 	/**
 	 * Create
@@ -49,12 +40,11 @@ class Account
 		string $name,
 		string $description
 	) {
-		$account = new self();
-		$account->id = AccountId::generate();
-		$account->aggregateId = (string)$account->id;
+		$account = new static();
+		$account->aggregateId = AccountId::generate();
 
 		$account->recordThat(AccountCreated::create(
-			$account->id,
+			AccountId::fromString($account->aggregateId()),
 			$name,
 			$description
 		));
@@ -72,20 +62,12 @@ class Account
 	public function update(string $name, string $description)
 	{
 		$this->recordThat(AccountUpdated::create(
-			AccountId::fromString((string)$this->id),
+			AccountId::fromString((string)$this->aggregateId),
 			$name,
 			$description
 		));
 
 		return $this;
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public function aggregateId(): string
-	{
-		return (string)$this->aggregateId;
 	}
 
 	/**
@@ -113,46 +95,9 @@ class Account
 	public function toArray()
 	{
 		return [
-			'accountId' => (string)$this->id,
+			'accountId' => (string)$this->aggregateId,
 			'name' => $this->name,
 			'description' => $this->description,
 		];
-	}
-
-	/**
-	 * @param object $event Event
-	 * @return void
-	 */
-	public function recordThat(object $event): void
-	{
-		$this->events[] = $event;
-	}
-
-	/**
-	 * @param \Iterator $events Events
-	 * @return self
-	 */
-	public static function reconstituteFromHistory(Iterator $events)
-	{
-		$self = new self();
-		foreach ($events as $event) {
-			$self->applay($event);
-			$self->aggregateVersion++;
-		}
-
-		return $self;
-	}
-
-	/**
-	 * @param object $event Event Object
-	 * @return void
-	 */
-	public function applay(object $event)
-	{
-		$classParts = explode('\\', get_class($event));
-		$method = 'when' . end($classParts);
-		if (method_exists($this, $method)) {
-			$this->{$method}($event);
-		}
 	}
 }

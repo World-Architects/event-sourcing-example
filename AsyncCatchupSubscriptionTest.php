@@ -4,22 +4,16 @@ declare(strict_types=1);
 namespace Prooph\EventStoreClient;
 
 use Amp\Loop;
-use Amp\Promise;
-use Amp\Success;
 use Assert\Assert;
-use Prooph\EventStore\Async\CatchUpSubscriptionDropped;
-use Prooph\EventStore\Async\ClientConnectionEventArgs;
-use Prooph\EventStore\Async\EventAppearedOnCatchupSubscription;
 use Prooph\EventStore\Async\EventStoreCatchUpSubscription;
 use Prooph\EventStore\Async\LiveProcessingStartedOnCatchUpSubscription;
 use Prooph\EventStore\CatchUpSubscriptionSettings;
-use Prooph\EventStore\ResolvedEvent;
-use Prooph\EventStore\SubscriptionDropReason;
 use Prooph\EventStore\EndPoint;
-use Prooph\EventStoreClient\EventStoreConnectionFactory;
-use Throwable;
+use Psa\EventSourcing\Projection\Async\StdoutCatchupSubscription;
+use Psa\EventSourcing\Projection\Async\StdoutCatchUpSubscriptionDropped;
 
 require 'vendor/autoload.php';
+require 'config/config.php';
 
 $options = getopt('', ['stream:', 'checkpoint:']);
 if (!isset($options['stream'])) {
@@ -59,38 +53,12 @@ Loop::run(function () use ($stream, $checkpoint) {
 		$stream,
 		$checkpoint,
 		CatchUpSubscriptionSettings::default(),
-
-		new class implements EventAppearedOnCatchupSubscription {
-			public function __invoke(
-				EventStoreCatchUpSubscription $subscription,
-				ResolvedEvent $resolvedEvent
-			): Promise {
-				//var_dump($resolvedEvent);
-				echo 'Type:     ' . $resolvedEvent->event()->eventType() . PHP_EOL;
-				echo 'Number:   ' . $resolvedEvent->event()->eventNumber() . PHP_EOL;
-				echo 'Payload:  ' . $resolvedEvent->event()->data() . PHP_EOL;
-				echo 'Metadata: ' . $resolvedEvent->event()->metadata() . PHP_EOL;
-				echo '--------------------------------------------------------------------------------' . PHP_EOL;
-				echo PHP_EOL;
-
-				return new Success();
-			}
-		},
-
+		new StdoutCatchupSubscription(),
 		new class implements LiveProcessingStartedOnCatchUpSubscription {
 			public function __invoke(EventStoreCatchUpSubscription $subscription): void {
 				echo 'Started live processing on ' . (string)$subscription->streamId() . PHP_EOL;
 			}
 		},
-
-		new class implements CatchUpSubscriptionDropped {
-			public function __invoke(
-				EventStoreCatchUpSubscription $subscription,
-				SubscriptionDropReason $reason,
-				Throwable $exception = null
-			): void {
-				echo $reason . PHP_EOL;
-			}
-		}
+		new StdoutCatchUpSubscriptionDropped()
 	);
 });
