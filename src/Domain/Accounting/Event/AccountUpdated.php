@@ -20,6 +20,7 @@ class AccountUpdated
 	 * @param AccountId $accountId Account Id
 	 * @param string $name Name
 	 * @param string $description Description
+	 * @return self
 	 */
 	public static function create(
 		AccountId $accountId,

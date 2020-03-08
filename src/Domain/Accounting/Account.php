@@ -5,7 +5,6 @@ namespace App\Domain\Accounting;
 
 use App\Domain\Accounting\Event\AccountCreated;
 use App\Domain\Accounting\Event\AccountUpdated;
-use Iterator;
 use Psa\EventSourcing\Aggregate\AggregateTrait;
 
 /**
@@ -35,6 +34,7 @@ class Account
 	 *
 	 * @param string $name Name
 	 * @param string $description Description
+	 * @return self;
 	 */
 	public static function create(
 		string $name,

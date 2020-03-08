@@ -21,6 +21,7 @@ final class AccountId
 	/**
 	 * Generates a new Id
 	 *
+	 * @throws \Exception
 	 * @return self
 	 */
 	public static function generate(): AccountId
