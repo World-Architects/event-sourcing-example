@@ -11,5 +11,5 @@ use Psa\EventSourcing\Aggregate\AsyncAggregateRepository;
  */
 class AsyncAccountRepository extends AsyncAggregateRepository
 {
-	const AGGREGATE_TYPE = Account::AGGREGATE_TYPE;
+	public const AGGREGATE_TYPE = Account::AGGREGATE_TYPE;
 }

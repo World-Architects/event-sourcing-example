@@ -10,10 +10,21 @@ use App\Domain\Accounting\AccountId;
  */
 class AccountUpdated
 {
-	const EVENT_TYPE = 'Accounting.Account.updated';
+	public const EVENT_TYPE = 'Accounting.Account.updated';
 
+	/**
+	 * @var string
+	 */
 	protected $aggregateId;
+
+	/**
+	 * @var string
+	 */
 	protected $name;
+
+	/**
+	 * @var string
+	 */
 	protected $description;
 
 	/**

@@ -10,10 +10,21 @@ use App\Domain\Accounting\AccountId;
  */
 class AccountCreated
 {
-	const EVENT_TYPE = 'Accounting.Account.created';
+	public const EVENT_TYPE = 'Accounting.Account.created';
 
+	/**
+	 * @var string
+	 */
 	protected $aggregateId;
+
+	/**
+	 * @var string
+	 */
 	protected $name;
+
+	/**
+	 * @var string
+	 */
 	protected $description;
 
 	/**
@@ -38,7 +49,7 @@ class AccountCreated
 	/**
 	 * @return string
 	 */
-	public function aggregateId()
+	public function aggregateId(): string
 	{
 		return (string)$this->aggregateId;
 	}

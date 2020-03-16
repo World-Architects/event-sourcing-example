@@ -35,6 +35,7 @@ class Account
 	 * @param string $name Name
 	 * @param string $description Description
 	 * @return self;
+	 * @throws \Exception
 	 */
 	public static function create(
 		string $name,
@@ -71,7 +72,8 @@ class Account
 	}
 
 	/**
-	 * @param \App\Domain\Accounting\Model\Event\AccountCreated $event Event
+	 * @param \App\Domain\Accounting\Event\AccountCreated $event Event
+	 * @return void
 	 */
 	public function whenAccountCreated(AccountCreated $event): void
 	{
@@ -81,7 +83,8 @@ class Account
 	}
 
 	/**
-	 * @param \App\Domain\Accounting\Model\Event\AccountUpdated $event Event
+	 * @param \App\Domain\Accounting\Event\AccountUpdated $event Event
+	 * @return void
 	 */
 	public function whenAccountUpdated(AccountUpdated $event): void
 	{
