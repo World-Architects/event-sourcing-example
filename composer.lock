@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4e31cf0f405b3503c82334244730fb88",
+    "content-hash": "74601cf0dd70f4b3728180252b66fd7d",
     "packages": [
         {
             "name": "amphp/amp",
-            "version": "v2.4.1",
+            "version": "v2.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/amphp/amp.git",
-                "reference": "2ac3b550c4997f2ec304faa63c8b2885079a2dc4"
+                "reference": "feca077369a47263b22156b3c6389e55f3809f24"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amphp/amp/zipball/2ac3b550c4997f2ec304faa63c8b2885079a2dc4",
-                "reference": "2ac3b550c4997f2ec304faa63c8b2885079a2dc4",
+                "url": "https://api.github.com/repos/amphp/amp/zipball/feca077369a47263b22156b3c6389e55f3809f24",
+                "reference": "feca077369a47263b22156b3c6389e55f3809f24",
                 "shasum": ""
             },
             "require": {
@@ -27,14 +27,15 @@
                 "amphp/php-cs-fixer-config": "dev-master",
                 "amphp/phpunit-util": "^1",
                 "ext-json": "*",
-                "phpstan/phpstan": "^0.8.5",
+                "jetbrains/phpstorm-stubs": "^2019.3",
                 "phpunit/phpunit": "^6.0.9 | ^7",
-                "react/promise": "^2"
+                "react/promise": "^2",
+                "vimeo/psalm": "^3.9@dev"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.0.x-dev"
+                    "dev-master": "2.x-dev"
                 }
             },
             "autoload": {
@@ -81,20 +82,20 @@
                 "non-blocking",
                 "promise"
             ],
-            "time": "2020-02-10T18:10:57+00:00"
+            "time": "2020-04-04T15:05:26+00:00"
         },
         {
             "name": "amphp/byte-stream",
-            "version": "v1.7.2",
+            "version": "v1.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/amphp/byte-stream.git",
-                "reference": "1e52f1752b2e20e2a7e464476ef887a2388e3832"
+                "reference": "b867505edb79dda8f253ca3c3a2bbadae4b16592"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amphp/byte-stream/zipball/1e52f1752b2e20e2a7e464476ef887a2388e3832",
-                "reference": "1e52f1752b2e20e2a7e464476ef887a2388e3832",
+                "url": "https://api.github.com/repos/amphp/byte-stream/zipball/b867505edb79dda8f253ca3c3a2bbadae4b16592",
+                "reference": "b867505edb79dda8f253ca3c3a2bbadae4b16592",
                 "shasum": ""
             },
             "require": {
@@ -104,10 +105,16 @@
                 "amphp/php-cs-fixer-config": "dev-master",
                 "amphp/phpunit-util": "^1",
                 "friendsofphp/php-cs-fixer": "^2.3",
-                "infection/infection": "^0.9.3",
-                "phpunit/phpunit": "^6"
+                "jetbrains/phpstorm-stubs": "^2019.3",
+                "phpunit/phpunit": "^6 || ^7 || ^8",
+                "vimeo/psalm": "^3.9@dev"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "Amp\\ByteStream\\": "lib"
@@ -140,7 +147,7 @@
                 "non-blocking",
                 "stream"
             ],
-            "time": "2020-01-29T18:22:23+00:00"
+            "time": "2020-04-04T16:56:54+00:00"
         },
         {
             "name": "amphp/cache",
@@ -447,16 +454,16 @@
         },
         {
             "name": "amphp/http-client",
-            "version": "v4.2.1",
+            "version": "v4.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/amphp/http-client.git",
-                "reference": "7ab9ee09c29865133a54060267665c7ad7c6fb17"
+                "reference": "3a07c0dbb84e790ac5351019cb625f976c563faa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amphp/http-client/zipball/7ab9ee09c29865133a54060267665c7ad7c6fb17",
-                "reference": "7ab9ee09c29865133a54060267665c7ad7c6fb17",
+                "url": "https://api.github.com/repos/amphp/http-client/zipball/3a07c0dbb84e790ac5351019cb625f976c563faa",
+                "reference": "3a07c0dbb84e790ac5351019cb625f976c563faa",
                 "shasum": ""
             },
             "require": {
@@ -479,6 +486,7 @@
                 "amphp/php-cs-fixer-config": "dev-master",
                 "amphp/phpunit-util": "^1.1",
                 "ext-json": "*",
+                "kelunik/link-header-rfc5988": "^1.0",
                 "phpunit/phpunit": "^7 || ^8"
             },
             "suggest": {
@@ -525,7 +533,7 @@
                 "non-blocking",
                 "rest"
             ],
-            "time": "2020-03-07T18:12:27+00:00"
+            "time": "2020-03-17T19:16:45+00:00"
         },
         {
             "name": "amphp/parallel",
@@ -1303,16 +1311,16 @@
         },
         {
             "name": "league/uri",
-            "version": "6.2.0",
+            "version": "6.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/uri.git",
-                "reference": "7b29ca33b287b4277d5ce7c26bc1be5d4118b484"
+                "reference": "6998530902550c6e3fefb5ef98d56fe92ecdb603"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/uri/zipball/7b29ca33b287b4277d5ce7c26bc1be5d4118b484",
-                "reference": "7b29ca33b287b4277d5ce7c26bc1be5d4118b484",
+                "url": "https://api.github.com/repos/thephpleague/uri/zipball/6998530902550c6e3fefb5ef98d56fe92ecdb603",
+                "reference": "6998530902550c6e3fefb5ef98d56fe92ecdb603",
                 "shasum": ""
             },
             "require": {
@@ -1329,7 +1337,7 @@
                 "phpstan/phpstan": "^0.12",
                 "phpstan/phpstan-phpunit": "^0.12",
                 "phpstan/phpstan-strict-rules": "^0.12",
-                "phpunit/phpunit": "^7.0 | ^8.0"
+                "phpunit/phpunit": "^8.0"
             },
             "suggest": {
                 "ext-fileinfo": "Needed to create Data URI from a filepath",
@@ -1381,7 +1389,7 @@
                 "url",
                 "ws"
             ],
-            "time": "2020-02-08T16:31:57+00:00"
+            "time": "2020-03-17T14:40:17+00:00"
         },
         {
             "name": "league/uri-interfaces",
@@ -1966,12 +1974,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/prooph/event-store-client.git",
-                "reference": "fae0a9692cf10a0b19fd03a5fba8c363b51dc913"
+                "reference": "3b56360fcce85ae7fbeb391307f6edbbf71f3f1a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/prooph/event-store-client/zipball/fae0a9692cf10a0b19fd03a5fba8c363b51dc913",
-                "reference": "fae0a9692cf10a0b19fd03a5fba8c363b51dc913",
+                "url": "https://api.github.com/repos/prooph/event-store-client/zipball/3b56360fcce85ae7fbeb391307f6edbbf71f3f1a",
+                "reference": "3b56360fcce85ae7fbeb391307f6edbbf71f3f1a",
                 "shasum": ""
             },
             "require": {
@@ -1988,6 +1996,7 @@
             },
             "require-dev": {
                 "amphp/log": "^1.0",
+                "amphp/phpunit-util": "dev-alt-13",
                 "doctrine/instantiator": "^1.1",
                 "php-coveralls/php-coveralls": "^2.1",
                 "phpspec/prophecy": "^1.7.2",
@@ -2023,7 +2032,7 @@
                 "ddd",
                 "prooph"
             ],
-            "time": "2020-03-06T09:37:11+00:00"
+            "time": "2020-04-06T20:42:11+00:00"
         },
         {
             "name": "prooph/event-store-http-client",
@@ -2089,7 +2098,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:World-Architects/event-sourcing.git",
-                "reference": "21ef8ad803fde88cb9fe36410ebe30761e0565f9"
+                "reference": "b70247c27fbd8ddfe70640c54b0386fc1491e400"
             },
             "require": {
                 "beberlei/assert": "^3.2",
@@ -2145,7 +2154,7 @@
                 }
             ],
             "description": "Event Sourcing Library",
-            "time": "2020-03-08T20:42:07+00:00"
+            "time": "2020-03-12T23:01:20+00:00"
         },
         {
             "name": "psr/http-client",
@@ -2248,16 +2257,16 @@
         },
         {
             "name": "psr/log",
-            "version": "1.1.2",
+            "version": "1.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "446d54b4cb6bf489fc9d75f55843658e6f25d801"
+                "reference": "0f73288fd15629204f9d42b7055f72dacbe811fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/446d54b4cb6bf489fc9d75f55843658e6f25d801",
-                "reference": "446d54b4cb6bf489fc9d75f55843658e6f25d801",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/0f73288fd15629204f9d42b7055f72dacbe811fc",
+                "reference": "0f73288fd15629204f9d42b7055f72dacbe811fc",
                 "shasum": ""
             },
             "require": {
@@ -2291,7 +2300,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2019-11-01T11:05:21+00:00"
+            "time": "2020-03-23T09:12:05+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -2422,16 +2431,16 @@
         },
         {
             "name": "symfony/polyfill-ctype",
-            "version": "v1.14.0",
+            "version": "v1.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-ctype.git",
-                "reference": "fbdeaec0df06cf3d51c93de80c7eb76e271f5a38"
+                "reference": "4719fa9c18b0464d399f1a63bf624b42b6fa8d14"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/fbdeaec0df06cf3d51c93de80c7eb76e271f5a38",
-                "reference": "fbdeaec0df06cf3d51c93de80c7eb76e271f5a38",
+                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/4719fa9c18b0464d399f1a63bf624b42b6fa8d14",
+                "reference": "4719fa9c18b0464d399f1a63bf624b42b6fa8d14",
                 "shasum": ""
             },
             "require": {
@@ -2443,7 +2452,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.14-dev"
+                    "dev-master": "1.15-dev"
                 }
             },
             "autoload": {
@@ -2476,7 +2485,7 @@
                 "polyfill",
                 "portable"
             ],
-            "time": "2020-01-13T11:15:53+00:00"
+            "time": "2020-02-27T09:26:54+00:00"
         }
     ],
     "packages-dev": [],
@@ -2489,6 +2498,8 @@
     },
     "prefer-stable": true,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "php": "^7.2"
+    },
     "platform-dev": []
 }
