@@ -1,6 +1,10 @@
 # Event Sourcing Example App
 
-## Goals:
+## Prerequisite
+
+A basic understanding of event sourcing and domain modelling.
+ 
+## Goals
 
  * Demonstrate event sourcing
  * Demonstrate minimal / none dependencies on the domain for event sourcing
@@ -15,7 +19,9 @@ All the code uses the Event Store default credentials:
  * **HTTP port**: 2212
  * **TCP/IP**: 1113
 
-If you need further assistence with the event store please check the official documentation https://eventstore.org/docs/.
+You can change the configuration in [config/config.php](../config/config.php).
+
+If you need further assistance with the event store please check the official documentation https://eventstore.org/docs/.
 
 ## Shell Scripts
 

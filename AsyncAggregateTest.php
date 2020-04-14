@@ -55,7 +55,7 @@ Amp\Loop::run(function() use ($config) {
 	 * Restore the aggregate
 	 ******************************************************************************/
 	$aggregateId = (string)$account->aggregateId();
-	$aggregate = $repository->getAggregate($aggregateId);
+	$account = $repository->getAggregate($aggregateId);
 
 	for ($i = 1; $i <= 5; $i++) {
 		$account->update(

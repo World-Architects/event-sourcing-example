@@ -2,8 +2,6 @@
 require 'vendor/autoload.php';
 require 'config/config.php';
 
-var_dump($config);
-
 use App\Domain\Accounting\Account;
 use App\Infrastructure\Repository\AccountRepository;
 use Prooph\EventStoreHttpClient\EventStoreConnectionFactory;
