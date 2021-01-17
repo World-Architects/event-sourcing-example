@@ -38,7 +38,7 @@ final class Account implements JsonSerializable
     /**
      * @var float
      */
-    protected $balance;
+    protected float $balance = 0.0;
 
     /**
      * Disable the constructor, use the create method
@@ -99,7 +99,7 @@ final class Account implements JsonSerializable
     /**
      * @param float $credit
      */
-    public function addCredit(float $credit)
+    public function addCredit(float $credit): void
     {
         $this->recordThat(
             CreditAdded::create(
@@ -112,7 +112,7 @@ final class Account implements JsonSerializable
     /**
      * @param float $debit
      */
-    public function addDebit(float $debit)
+    public function addDebit(float $debit): void
     {
         $this->recordThat(
             DebitAdded::create(
@@ -146,7 +146,7 @@ final class Account implements JsonSerializable
     /**
      * @param \App\Domain\Accounting\Event\CreditAdded $event
      */
-    public function whenCreditAdded(CreditAdded $event)
+    public function whenCreditAdded(CreditAdded $event): void
     {
         $this->balance += $event->amount();
     }
@@ -154,21 +154,21 @@ final class Account implements JsonSerializable
     /**
      * @param \App\Domain\Accounting\Event\DebitAdded $event
      */
-    public function whenDebitAdded(DebitAdded $event)
+    public function whenDebitAdded(DebitAdded $event): void
     {
         $this->balance -= $event->amount();
     }
 
     /**
-     * @return array
+     * @return array<mixed>
      */
-    public function toArray()
+    public function toArray(): array
     {
         return [
-        'accountId' => (string)$this->aggregateId,
-        'name' => $this->name,
-        'description' => $this->description,
-        'balance' => $this->balance
+            'accountId' => (string)$this->aggregateId,
+            'name' => $this->name,
+            'description' => $this->description,
+            'balance' => $this->balance
         ];
     }
 
