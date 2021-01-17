@@ -12,11 +12,14 @@ use Psa\EventSourcing\EventStoreIntegration\EventReflectionTranslator;
 use Psa\EventSourcing\SnapshotStore\InMemoryStore;
 
 Amp\Loop::run(function() use ($config) {
-	/*******************************************************************************
-	 * Setting up the event store
-	 ******************************************************************************/
+/*******************************************************************************
+ * Setting up the event store
+ ******************************************************************************/
 	$eventStore = EventStoreConnectionFactory::createFromEndPoint(
-		new EndPoint($config['eventstore']['host'], $config['eventstore']['port'])
+		new EndPoint(
+			$config['eventstore-async']['host'],
+			$config['eventstore-async']['port']
+		)
 	);
 
 	$eventStore->onConnected(function (): void {
@@ -27,11 +30,11 @@ Amp\Loop::run(function() use ($config) {
 		echo 'Connection closed' . PHP_EOL;
 	});
 
-	yield $eventStore->connectAsync();
+	$eventStore->connectAsync();
 
-	/*******************************************************************************
-	 * Setting up the repository object
-	 ******************************************************************************/
+/*******************************************************************************
+ * Setting up the repository object
+ ******************************************************************************/
 	$repository = new AsyncAccountRepository(
 		$eventStore,
 		new AggregateReflectionTranslator(),
@@ -39,9 +42,9 @@ Amp\Loop::run(function() use ($config) {
 		new InMemoryStore()
 	);
 
-	/*******************************************************************************
-	 * Create, modify and save the aggregate (with two events)
-	 ******************************************************************************/
+/*******************************************************************************
+ * Create, modify and save the aggregate (with two events)
+ ******************************************************************************/
 	$account = Account::create(
 		'Test',
 		'Test'
@@ -51,28 +54,20 @@ Amp\Loop::run(function() use ($config) {
 	 * @var $result \Prooph\EventStore\WriteResult
 	 */
 	$repository->saveAggregate($account);
-	/*******************************************************************************
-	 * Restore the aggregate
-	 ******************************************************************************/
+/*******************************************************************************
+ * Restore the aggregate and save again with some added events
+ ******************************************************************************/
 	$aggregateId = (string)$account->aggregateId();
 	$account = $repository->getAggregate($aggregateId);
 
-	for ($i = 1; $i <= 5; $i++) {
-		$account->update(
-			'Updated ' . $i,
-			'Updated ' . $i
-		);
-	}
+	$account->update(
+		'After Snapshot Name',
+		'After Snapshot Description'
+	);
 
-	$repository->saveAggregate($account);
-	$repository->createSnapshot($account);
-
-	for ($i = 5; $i <= 10; $i++) {
-		$account->update(
-			'Updated ' . $i,
-			'Updated ' . $i
-		);
-	}
+	$account->addCredit(50.00);
+	$account->addDebit(25.00);
+	$account->addCredit(50.00);
 
 	$repository->saveAggregate($account);
 

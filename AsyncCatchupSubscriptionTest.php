@@ -36,7 +36,10 @@ echo '--------------------------------------------------------------------------
 
 Loop::run(function () use ($stream, $checkpoint) {
 	$eventStore = EventStoreConnectionFactory::createFromEndPoint(
-		new EndPoint('127.0.0.1', 1113)
+		new EndPoint(
+			$config['eventstore-async']['host'],
+			$config['eventstore-async']['port']
+		)
 	);
 
 	$eventStore->onConnected(function (): void {

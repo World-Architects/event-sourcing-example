@@ -7,13 +7,14 @@
     }
   ],
   "require": {
-    "php": "^7.2",
+    "php": "^7.4",
     "guzzlehttp/guzzle": "^6.4",
     "php-http/guzzle6-adapter": "^2.0",
     "prooph/event-store-client": "dev-master",
     "prooph/event-store-http-client": "dev-master",
-    "psa/event-sourcing": "dev-develop",
-    "psr/log": "^1.1"
+    "psa/event-sourcing": "dev-updating",
+    "psr/log": "^1.1",
+    "ext-json": "*"
   },
   "autoload": {
     "psr-4": {
@@ -23,7 +24,7 @@
   "repositories": [
     {
       "type": "git",
-      "url": "git@github.com:World-Architects/event-sourcing.git"
+      "url": "git@github.com:burzum/event-sourcing.git"
     }
   ],
   "minimum-stability": "dev",

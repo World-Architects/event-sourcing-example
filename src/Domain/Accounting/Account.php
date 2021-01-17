@@ -11,12 +11,15 @@ namespace App\Domain\Accounting;
 
 use App\Domain\Accounting\Event\AccountCreated;
 use App\Domain\Accounting\Event\AccountUpdated;
+use App\Domain\Accounting\Event\CreditAdded;
+use App\Domain\Accounting\Event\DebitAdded;
 use Psa\EventSourcing\Aggregate\AggregateTrait;
+use JsonSerializable;
 
 /**
  * Account Aggregate
  */
-class Account
+final class Account implements JsonSerializable
 {
 	const AGGREGATE_TYPE = ['Account' => Account::class];
 
@@ -25,13 +28,21 @@ class Account
 	/**
 	 * @var string
 	 */
-	protected $name;
+	protected string $name;
 
 	/**
 	 * @var null|string
 	 */
-	protected $description;
+	protected ?string $description;
 
+	/**
+	 * @var float
+	 */
+	protected $balance;
+
+	/**
+	 * Disable the constructor, use the create method
+	 */
 	private function __construct() {
 	}
 
@@ -40,12 +51,14 @@ class Account
 	 *
 	 * @param string $name Name
 	 * @param string $description Description
+	 * @param float $balance
 	 * @return self;
 	 * @throws \Exception
 	 */
 	public static function create(
 		string $name,
-		string $description
+		string $description,
+		float $balance = 0.00
 	) {
 		$account = new static();
 		$account->aggregateId = AccountId::generate();
@@ -53,7 +66,8 @@ class Account
 		$account->recordThat(AccountCreated::create(
 			AccountId::fromString($account->aggregateId()),
 			$name,
-			$description
+			$description,
+			$balance
 		));
 
 		return $account;
@@ -78,6 +92,28 @@ class Account
 	}
 
 	/**
+	 * @param float $credit
+	 */
+	public function addCredit(float $credit)
+	{
+		$this->recordThat(CreditAdded::create(
+			AccountId::fromString((string)$this->aggregateId),
+			$credit
+		));
+	}
+
+	/**
+	 * @param float $debit
+	 */
+	public function addDebit(float $debit)
+	{
+		$this->recordThat(DebitAdded::create(
+			AccountId::fromString((string)$this->aggregateId),
+			$debit,
+		));
+	}
+
+	/**
 	 * @param \App\Domain\Accounting\Event\AccountCreated $event Event
 	 * @return void
 	 */
@@ -99,6 +135,22 @@ class Account
 	}
 
 	/**
+	 * @param \App\Domain\Accounting\Event\CreditAdded $event
+	 */
+	public function whenCreditAdded(CreditAdded $event)
+	{
+		$this->balance += $event->amount();
+	}
+
+	/**
+	 * @param \App\Domain\Accounting\Event\DebitAdded $event
+	 */
+	public function whenDebitAdded(DebitAdded $event)
+	{
+		$this->balance -= $event->amount();
+	}
+
+	/**
 	 * @return array
 	 */
 	public function toArray()
@@ -107,6 +159,15 @@ class Account
 			'accountId' => (string)$this->aggregateId,
 			'name' => $this->name,
 			'description' => $this->description,
+			'balance' => $this->balance
 		];
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function jsonSerialize()
+	{
+		return $this->toArray();
 	}
 }

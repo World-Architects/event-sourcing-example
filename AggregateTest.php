@@ -18,6 +18,8 @@ use Psa\EventSourcing\SnapshotStore\InMemoryStore;
  ******************************************************************************/
 $eventStore = EventStoreConnectionFactory::create(
 	new ConnectionSettings(
+		new \Psr\Log\NullLogger(),
+		true,
 		new EndPoint($config['eventstore']['host'], $config['eventstore']['port']),
 		EndpointExtensions::HTTP_SCHEMA,
 		new UserCredentials($config['eventstore']['user'], $config['eventstore']['pass'])
@@ -74,9 +76,14 @@ echo PHP_EOL;
  ******************************************************************************/
 echo '#4 Changing aggregate and saving again...' . PHP_EOL;
 $account->update(
-	'After Snapshot',
-	'After Snapshot'
+	'After Snapshot Name',
+	'After Snapshot Description'
 );
+
+$account->addCredit(50.00);
+$account->addDebit(25.00);
+$account->addCredit(50.00);
+
 $repository->saveAggregate($account);
 echo 'Aggregate saved' . PHP_EOL;
 echo PHP_EOL;

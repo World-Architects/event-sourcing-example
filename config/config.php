@@ -6,7 +6,7 @@ $config = [
 		'user' => 'admin',
 		'pass' => 'changeit'
 	],
-	'eventstoreasync' => [
+	'eventstore-async' => [
 		'host' => '127.0.0.1',
 		'port' => 1113,
 		'user' => 'admin',

@@ -7,7 +7,7 @@ A basic understanding of event sourcing and domain modelling.
 ## Goals
 
  * Demonstrate event sourcing
- * Demonstrate minimal / none dependencies on the domain for event sourcing
+ * Demonstrate minimal / none dependencies on the domain for the event sourcing
  * Demonstrate projections
 
 ## Event Store Settings
@@ -16,7 +16,7 @@ All the code uses the Event Store default credentials:
 
  * **username**: admin
  * **password**: changeit
- * **HTTP port**: 2212
+ * **HTTP port**: 2113
  * **TCP/IP**: 1113
 
 You can change the configuration in [config/config.php](../config/config.php).
@@ -39,6 +39,12 @@ If you use the `--checkpoint` option, you can reply events from a given position
 
 ```sh
 php .\CatchupSubscriptionTest.php --stream='<stream-name>'
+```
+
+Our example domain is `Account` and the according stream is:
+
+```sh
+php .\CatchupSubscriptionTest.php --stream=$ce-Account'
 ```
 
 ### Async Client

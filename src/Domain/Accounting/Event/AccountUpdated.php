@@ -14,7 +14,7 @@ use App\Domain\Accounting\AccountId;
 /**
  * Account Created Event
  */
-class AccountUpdated
+final class AccountUpdated
 {
 	public const EVENT_TYPE = 'Accounting.Account.updated';
 
