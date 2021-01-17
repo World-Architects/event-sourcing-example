@@ -30,6 +30,11 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "config": {
-    "sort-packages": true
+    "sort-packages": true,
+    "bin-dir": "bin"
+  },
+  "require-dev": {
+    "phpstan/phpstan": "^0.12.67",
+    "squizlabs/php_codesniffer": "^3.5"
   }
 }

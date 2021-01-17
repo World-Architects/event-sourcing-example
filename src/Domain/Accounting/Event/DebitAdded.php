@@ -16,30 +16,36 @@ use App\Domain\Accounting\AccountId;
  */
 final class DebitAdded
 {
-	public const EVENT_TYPE = 'Accounting.Account.debitAdded';
+    public const EVENT_TYPE = 'Accounting.Account.debitAdded';
 
-	protected float $amount = 0.0;
+    /**
+     * @var float
+     */
+    protected float $amount = 0.0;
 
-	protected string $aggregateId;
+    /**
+     * @var string
+     */
+    protected string $aggregateId;
 
-	/**
-	 * @param AccountId $accountId Account Id
-	 * @param float $amount Amount
-	 * @return self
-	 */
-	public static function create(
-		AccountId $accountId,
-		float $amount
-	) {
-		$event = new self();
-		$event->aggregateId = (string)$accountId;
-		$event->amount = $amount;
+    /**
+     * @param  AccountId $accountId Account Id
+     * @param  float     $amount    Amount
+     * @return self
+     */
+    public static function create(
+        AccountId $accountId,
+        float $amount
+    ) {
+        $event = new self();
+        $event->aggregateId = (string)$accountId;
+        $event->amount = $amount;
 
-		return $event;
-	}
+        return $event;
+    }
 
-	public function amount(): float
-	{
-		return $this->amount;
-	}
+    public function amount(): float
+    {
+        return $this->amount;
+    }
 }

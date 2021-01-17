@@ -17,49 +17,50 @@ use Ramsey\Uuid\UuidInterface;
  */
 final class AccountId
 {
-	/**
-	 * UUID
-	 *
-	 * @var \Ramsey\Uuid\UuidInterface
-	 */
-	private $uuid;
+    /**
+     * UUID
+     *
+     * @var \Ramsey\Uuid\UuidInterface
+     */
+    private $uuid;
 
-	/**
-	 * Generates a new Id
-	 *
-	 * @throws \Exception
-	 * @return self
-	 */
-	public static function generate(): AccountId
-	{
-		return new self(Uuid::uuid4());
-	}
+    /**
+     * Generates a new Id
+     *
+     * @throws \Exception
+     * @return self
+     */
+    public static function generate(): AccountId
+    {
+        return new self(Uuid::uuid4());
+    }
 
-	/**
-	 * @return self
-	 */
-	public static function fromString(string $userId): AccountId
-	{
-		return new self(Uuid::fromString($userId));
-	}
+    /**
+     * @param string $userId
+     * @return self
+     */
+    public static function fromString(string $userId): AccountId
+    {
+        return new self(Uuid::fromString($userId));
+    }
 
-	/**
-	 * Constructor
-	 *
-	 * @param \Ramsey\Uuid\UuidInterface
-	 */
-	private function __construct(UuidInterface $uuid)
-	{
-		$this->uuid = $uuid;
-	}
+    /**
+     * Constructor
+     *
+     * @param \Ramsey\Uuid\UuidInterface $uuid UUID
+     */
+    private function __construct(UuidInterface $uuid)
+    {
+        $this->uuid = $uuid;
+    }
 
-	/**
-	 * To string
-	 *
-	 * @return string
-	 */
-	public function __toString(): string
-	{
-		return (string)$this->uuid;
-	}
+    /**
+     * To string
+     *
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return (string)$this->uuid->toString();
+    }
 }
