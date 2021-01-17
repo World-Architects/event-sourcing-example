@@ -2,7 +2,7 @@
 
 ## Prerequisite
 
-A basic understanding of event sourcing and domain modelling.
+A basic understanding of [event sourcing](https://martinfowler.com/eaaDev/EventSourcing.html) and [domain modelling](https://en.wikipedia.org/wiki/Domain_model).
  
 ## Goals
 
@@ -18,6 +18,7 @@ All the code uses the Event Store default credentials:
  * **password**: changeit
  * **HTTP port**: 2113
  * **TCP/IP**: 1113
+ * **Host**: 127.0.0.1
 
 You can change the configuration in [config/config.php](../config/config.php).
 
@@ -25,7 +26,7 @@ If you need further assistance with the event store please check the official do
 
 ## Shell Scripts
 
-### HTTP Client
+### HTTP Event Store Client
 
 Running AggregateTest.php will generate a new stream with two events and output the aggregate id and data if it was successful.
 
@@ -47,7 +48,7 @@ Our example domain is `Account` and the according stream is:
 php .\CatchupSubscriptionTest.php --stream=$ce-Account'
 ```
 
-### Async Client
+### Async Event Store Client
 
 Basically the same as above just that these files implement the async client library.
 
