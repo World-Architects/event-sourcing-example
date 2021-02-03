@@ -3,12 +3,8 @@ require 'vendor/autoload.php';
 require 'config/config.php';
 
 use App\Domain\Accounting\Account;
+use App\Infrastructure\EventStore\EventStoreConnectionFactory;
 use App\Infrastructure\Repository\AccountRepository;
-use Prooph\EventStoreHttpClient\EventStoreConnectionFactory;
-use Prooph\EventStoreHttpClient\ConnectionSettings;
-use Prooph\EventStore\EndPoint;
-use Prooph\EventStore\UserCredentials;
-use Prooph\EventStore\Transport\Http\EndpointExtensions;
 use Psa\EventSourcing\EventStoreIntegration\AggregateReflectionTranslator;
 use Psa\EventSourcing\EventStoreIntegration\EventReflectionTranslator;
 use Psa\EventSourcing\SnapshotStore\InMemoryStore;
@@ -16,24 +12,17 @@ use Psa\EventSourcing\SnapshotStore\InMemoryStore;
 /*******************************************************************************
  * Setting up the event store
  ******************************************************************************/
-$eventStore = EventStoreConnectionFactory::create(
-	new ConnectionSettings(
-		new \Psr\Log\NullLogger(),
-		true,
-		new EndPoint($config['eventstore']['host'], $config['eventstore']['port']),
-		EndpointExtensions::HTTP_SCHEMA,
-		new UserCredentials($config['eventstore']['user'], $config['eventstore']['pass'])
-	)
-);
+$eventStore = (new EventStoreConnectionFactory())
+    ->createHttpClient($config['eventstore']);
 
 /*******************************************************************************
  * Setting up the repository object
  ******************************************************************************/
 $repository = new AccountRepository(
-	$eventStore,
-	new AggregateReflectionTranslator(),
-	new EventReflectionTranslator(),
-	new InMemoryStore()
+    $eventStore,
+    new AggregateReflectionTranslator(),
+    new EventReflectionTranslator(),
+    new InMemoryStore()
 );
 
 /*******************************************************************************
@@ -41,13 +30,13 @@ $repository = new AccountRepository(
  ******************************************************************************/
 echo '#1 Creating aggregate...' . PHP_EOL;
 $account = Account::create(
-	'Test',
-	'Test'
+    'Test',
+    'Test'
 );
 
 $account->update(
-	'Updated name',
-	'Updated description'
+    'Updated name',
+    'Updated description'
 );
 echo 'Aggregate created' . PHP_EOL;
 echo PHP_EOL;
@@ -76,8 +65,8 @@ echo PHP_EOL;
  ******************************************************************************/
 echo '#4 Changing aggregate and saving again...' . PHP_EOL;
 $account->update(
-	'After Snapshot Name',
-	'After Snapshot Description'
+    'After Snapshot Name',
+    'After Snapshot Description'
 );
 
 $account->addCredit(50.00);
@@ -96,7 +85,7 @@ $aggregateId = (string)$account->aggregateId();
 $aggregate = $repository->getAggregate($aggregateId);
 
 echo 'Read aggregate ' . $aggregate->aggregateId() . PHP_EOL;
-echo 'Dumping aggregate object :' . PHP_EOL;
+echo 'Dumping aggregate object:' . PHP_EOL;
 echo PHP_EOL;
 
 echo var_export($aggregate, true);

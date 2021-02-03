@@ -14,7 +14,8 @@
     "prooph/event-store-http-client": "dev-master",
     "psa/event-sourcing": "dev-updating",
     "psr/log": "^1.1",
-    "ext-json": "*"
+    "ext-json": "*",
+    "ext-pdo": "*"
   },
   "autoload": {
     "psr-4": {

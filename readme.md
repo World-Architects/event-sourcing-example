@@ -24,14 +24,14 @@ You can change the configuration in [config/config.php](../config/config.php).
 
 If you need further assistance with the event store please check the official documentation https://eventstore.org/docs/.
 
-## Shell Scripts
+## Running the examples
 
 ### HTTP Event Store Client
 
-Running AggregateTest.php will generate a new stream with two events and output the aggregate id and data if it was successful.
+Running AggregateExample.php will generate a new stream with two events and output the aggregate id and data if it was successful.
 
 ```sh
-php .\AggregateTest.php'
+php .\AggregateExample.php'
 ```
 
 You need to pass the stream, for the example app this is `Account-<aggregate-uuid>`.
@@ -39,23 +39,31 @@ You need to pass the stream, for the example app this is `Account-<aggregate-uui
 If you use the `--checkpoint` option, you can reply events from a given position in the stream. If not it will start with the first event.
 
 ```sh
-php .\CatchupSubscriptionTest.php --stream='<stream-name>'
+php .\CatchupSubscriptionExample.php --stream='<stream-name>'
 ```
 
-Our example domain is `Account` and the according stream is:
+Starting at version 4
 
 ```sh
-php .\CatchupSubscriptionTest.php --stream=$ce-Account'
+php .\CatchupSubscriptionExample.php --stream='<stream-name>' --checkpoint 4
 ```
+
+To run a subscription on a **category** stream prefix it we `$ce-` followed by the name of it:
+
+```sh
+php .\CatchupSubscriptionExample.php --stream=$ce-Account'
+```
+
+Please note that the checkpoint is not applicable here.
 
 ### Async Event Store Client
 
 Basically the same as above just that these files implement the async client library.
 
 ```sh
-php .\AsyncAggregateTest.php
+php .\AsyncAggregateExample.php
 ```
 
 ```sh
-php .\AsyncCatchupSubscription.php --stream='<stream-name>'
+php .\AsyncCatchupSubscriptionExample.php --stream='<stream-name>'
 ```
