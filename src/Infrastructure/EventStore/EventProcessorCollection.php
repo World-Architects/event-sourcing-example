@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Infrastructure\EventStore;
@@ -10,9 +11,17 @@ namespace App\Infrastructure\EventStore;
  */
 class EventProcessorCollection
 {
+    /**
+     * @var array<array>
+     */
     protected array $events = [];
 
-    public function add(string $event, callable $callable)
+    /**
+     * @param string $event
+     * @param callable $callable
+     * @return void
+     */
+    public function add(string $event, callable $callable): void
     {
         if (!isset($this->events[$event])) {
             $this->events[$event] = [];
@@ -30,6 +39,10 @@ class EventProcessorCollection
         return !empty($this->events[$event]);
     }
 
+    /**
+     * @param string $event
+     * @return callable[]
+     */
     public function getProcessorsForEvent(string $event): array
     {
         if (!$this->hasProcessorsForEvent($event)) {

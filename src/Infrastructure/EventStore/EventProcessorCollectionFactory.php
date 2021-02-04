@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Infrastructure\EventStore;
@@ -52,12 +53,16 @@ class EventProcessorCollectionFactory
 
     protected function getDataFromEvent(ResolvedEvent $resolvedEvent): array
     {
+        if ($resolvedEvent->event()->data() === null) {
+            return [];
+        }
+
         return json_decode($resolvedEvent->event()->data(), true, 512, JSON_THROW_ON_ERROR);
     }
 
     protected function addAccountCreated()
     {
-        $this->collection->add(AccountCreated::class, function(ResolvedEvent $resolvedEvent) {
+        $this->collection->add(AccountCreated::class, function (ResolvedEvent $resolvedEvent) {
             $data = $this->getDataFromEvent($resolvedEvent);
 
             $this->pdoWriterRepository->insert('accounts', [
@@ -71,7 +76,7 @@ class EventProcessorCollectionFactory
 
     protected function addCreditAdded(): void
     {
-        $this->collection->add(CreditAdded::class, function(ResolvedEvent $resolvedEvent) {
+        $this->collection->add(CreditAdded::class, function (ResolvedEvent $resolvedEvent) {
             $data = $this->getDataFromEvent($resolvedEvent);
 
             $this->pdoWriterRepository->query('UPDATE accounts SET balance = balance + :amount WHERE id = :id', [
@@ -83,7 +88,7 @@ class EventProcessorCollectionFactory
 
     protected function addDeditAdded(): void
     {
-        $this->collection->add(DebitAdded::class, function(ResolvedEvent $resolvedEvent) {
+        $this->collection->add(DebitAdded::class, function (ResolvedEvent $resolvedEvent) {
             $data = $this->getDataFromEvent($resolvedEvent);
 
             $this->pdoWriterRepository->query('UPDATE accounts SET balance = balance - :amount WHERE id = :id', [
@@ -98,7 +103,11 @@ class EventProcessorCollectionFactory
      */
     protected function addConsoleOutputProcessorToEvents(array $events): void
     {
-        $callable = function(ResolvedEvent $resolvedEvent) {
+        $callable = function (ResolvedEvent $resolvedEvent) {
+            if ($resolvedEvent->event() === null) {
+                return;
+            }
+
             echo 'Type:     ' . $resolvedEvent->event()->eventType() . PHP_EOL;
             echo 'Number:   ' . $resolvedEvent->event()->eventNumber() . PHP_EOL;
             echo 'Payload:  ' . $resolvedEvent->event()->data() . PHP_EOL;

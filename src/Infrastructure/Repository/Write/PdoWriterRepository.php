@@ -33,16 +33,16 @@ class PdoWriterRepository
 
     /**
      * @param string $table
-     * @param array $data
+     * @param array<mixed> $data
      * @return void
      */
-    public function delete(string $table, $data)
+    public function delete(string $table, array $data): void
     {
         $query = $this->createDeleteQuery($table, $data);
 
         $statement = $this->pdo->prepare($query);
 
-        if ($statement === false) {
+        if ($statement == false) {
             $errorInfo = $this->pdo->errorInfo();
             throw new PDOException($errorInfo[2]);
         }
@@ -50,10 +50,11 @@ class PdoWriterRepository
         $statement->execute($data);
     }
 
-    public function query(string $query, $data) {
+    public function query(string $query, array $data): void
+    {
         $statement = $this->pdo->prepare($query);
 
-        if ($statement === false) {
+        if ($statement == false) {
             $errorInfo = $this->pdo->errorInfo();
             throw new PDOException($errorInfo[2]);
         }
@@ -63,7 +64,7 @@ class PdoWriterRepository
 
     /**
      * @param string $table
-     * @param array $data
+     * @param array<mixed> $data
      * @return string
      */
     protected function createDeleteQuery(string $table, array $data): string
@@ -78,12 +79,16 @@ class PdoWriterRepository
         return $query . implode(',', $pieces);
     }
 
+    /**
+     * @param string $table
+     * @param array<mixed> $data
+     */
     public function insert(string $table, array $data)
     {
         $queryString = $this->createUpsertQuery($table, $data);
         $statement = $this->pdo->prepare($queryString);
 
-        if ($statement === false) {
+        if ($statement == false) {
             $errorInfo = $this->pdo->errorInfo();
             throw new PDOException($errorInfo[2]);
         }
@@ -91,7 +96,10 @@ class PdoWriterRepository
         $statement->execute($data);
     }
 
-    protected function handlePdoError(PDOStatement $statement)
+    /**
+     * @param \PDOStatement $statement
+     */
+    protected function handlePdoError(PDOStatement $statement):void
     {
         if ($statement->errorCode() === PDO::ERR_NONE) {
             return;
@@ -102,7 +110,7 @@ class PdoWriterRepository
 
     /**
      * @param string $table
-     * @param array $data
+     * @param array<mixed> $data
      * @return string
      */
     protected function createUpsertQuery(string $table, array $data): string
@@ -112,7 +120,7 @@ class PdoWriterRepository
         $placeholder = implode(', :', array_keys($data));
         $placeholder = 'VALUES (:' . $placeholder . ')' . PHP_EOL;
 
-        $onDuplicateKeyUpdate = 'ON DUPLICATE KEY UPDATE'. PHP_EOL;
+        $onDuplicateKeyUpdate = 'ON DUPLICATE KEY UPDATE' . PHP_EOL;
 
         $fields = [];
         foreach ($data as $key => $value) {
@@ -120,6 +128,6 @@ class PdoWriterRepository
         }
         $fields = implode(', ', $fields) . PHP_EOL;
 
-        return $insertInto . $placeholder . $onDuplicateKeyUpdate. $fields;
+        return $insertInto . $placeholder . $onDuplicateKeyUpdate . $fields;
     }
 }
