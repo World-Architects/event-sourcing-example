@@ -6,11 +6,6 @@ use App\Infrastructure\EventStore\EventProcessorCollection;
 use App\Infrastructure\EventStore\EventProcessorCollectionFactory;
 use App\Infrastructure\Repository\Write\PdoWriterRepository;
 use Assert\Assert;
-use Prooph\EventStoreHttpClient\EventStoreConnectionFactory;
-use Prooph\EventStoreHttpClient\ConnectionSettings;
-use Prooph\EventStore\EndPoint;
-use Prooph\EventStore\UserCredentials;
-use Prooph\EventStore\Transport\Http\EndpointExtensions;
 use Prooph\EventStore\EventStoreCatchUpSubscription;
 use Prooph\EventStore\SubscriptionDropReason;
 use Prooph\EventStore\CatchUpSubscriptionSettings;
@@ -48,15 +43,8 @@ $collection = $factory->build();
 /*******************************************************************************
  * Setting up the event store
  ******************************************************************************/
-$eventStore = EventStoreConnectionFactory::create(
-    new ConnectionSettings(
-        new \Psr\Log\NullLogger(),
-        true,
-        new EndPoint($config['eventstore']['host'], $config['eventstore']['port']),
-        EndpointExtensions::HTTP_SCHEMA,
-        new UserCredentials($config['eventstore']['user'], $config['eventstore']['pass'])
-    )
-);
+$eventStore = (new \App\Infrastructure\EventStore\EventStoreConnectionFactory())
+    ->createHttpClient($config['eventstore']);
 
 $subscription = $eventStore->subscribeToStreamFrom(
     $stream,
@@ -67,6 +55,10 @@ $subscription = $eventStore->subscribeToStreamFrom(
         EventStoreCatchUpSubscription $subscription,
         ResolvedEvent $resolvedEvent
     ) use ($collection): void {
+        if ($resolvedEvent->event() === null) {
+            return;
+        }
+
         $eventType = $resolvedEvent->event()->eventType();
         if ($collection->hasProcessorsForEvent($eventType)) {
             $processors = $collection->getProcessorsForEvent($eventType);
