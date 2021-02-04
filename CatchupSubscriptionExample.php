@@ -2,6 +2,9 @@
 require 'vendor/autoload.php';
 require 'config/config.php';
 
+use App\Infrastructure\EventStore\EventProcessorCollection;
+use App\Infrastructure\EventStore\EventProcessorCollectionFactory;
+use App\Infrastructure\Repository\Write\PdoWriterRepository;
 use Assert\Assert;
 use Prooph\EventStoreHttpClient\EventStoreConnectionFactory;
 use Prooph\EventStoreHttpClient\ConnectionSettings;
@@ -31,6 +34,17 @@ if (!isset($options['checkpoint'])) {
 echo 'NOTE: If you want to run a category stream you MUST prefix it with `$ce-`!' . PHP_EOL;
 echo '--------------------------------------------------------------------------------' . PHP_EOL;
 
+$pdo = new PDO($config['pdo-mariadb']['dsn'], $config['pdo-mariadb']['user'], $config['pdo-mariadb']['pass']);
+
+/*******************************************************************************
+ * Setting up the event processors
+ ******************************************************************************/
+$factory = new EventProcessorCollectionFactory(
+    new EventProcessorCollection(),
+    new PdoWriterRepository($pdo)
+);
+$collection = $factory->build();
+
 /*******************************************************************************
  * Setting up the event store
  ******************************************************************************/
@@ -52,13 +66,14 @@ $subscription = $eventStore->subscribeToStreamFrom(
     function (
         EventStoreCatchUpSubscription $subscription,
         ResolvedEvent $resolvedEvent
-    ): void {
-        echo 'Type:     ' . $resolvedEvent->event()->eventType() . PHP_EOL;
-        echo 'Number:   ' . $resolvedEvent->event()->eventNumber() . PHP_EOL;
-        echo 'Payload:  ' . $resolvedEvent->event()->data() . PHP_EOL;
-        echo 'Metadata: ' . $resolvedEvent->event()->metadata() . PHP_EOL;
-        echo '--------------------------------------------------------------------------------' . PHP_EOL;
-        echo PHP_EOL;
+    ) use ($collection): void {
+        $eventType = $resolvedEvent->event()->eventType();
+        if ($collection->hasProcessorsForEvent($eventType)) {
+            $processors = $collection->getProcessorsForEvent($eventType);
+            foreach ($processors as $processor) {
+                $processor($resolvedEvent);
+            }
+        }
     },
 
     function (EventStoreCatchUpSubscription $subscription): void {

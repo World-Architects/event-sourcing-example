@@ -16,7 +16,7 @@ $eventStore = (new EventStoreConnectionFactory())
     ->createHttpClient($config['eventstore']);
 
 /*******************************************************************************
- * Setting up the repository object
+ * Setting up the repository objects
  ******************************************************************************/
 $repository = new AccountRepository(
     $eventStore,
@@ -24,7 +24,6 @@ $repository = new AccountRepository(
     new EventReflectionTranslator(),
     new InMemoryStore()
 );
-
 /*******************************************************************************
  * Create, modify and save the aggregate (with two events)
  ******************************************************************************/
