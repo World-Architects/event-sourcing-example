@@ -15,6 +15,6 @@ $config = [
     'pdo-mariadb' => [
         'dsn' => 'mysql:host=localhost;dbname=accounting',
         'user' => 'root',
-        'pass' => 'changeit'
+        'pass' => 'id10t'
     ]
 ];

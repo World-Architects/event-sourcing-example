@@ -26,6 +26,14 @@ If you need further assistance with the event store please check the official do
 
 ## Running the examples
 
+### Create the SQL database
+
+The SQL database it is just used to write the data processed in the subscriptions, to demonstrate this, but it is not required for the event store or event sourcing itself.
+
+Create a database called `accounting` and run the two SQL files in the [resources](./resources) folder.
+
+Configure your SQL connection in [config/config.php](../config/config.php).
+
 ### HTTP Event Store Client
 
 Running AggregateExample.php will generate a new stream with two events and output the aggregate id and data if it was successful.
