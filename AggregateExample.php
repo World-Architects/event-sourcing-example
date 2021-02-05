@@ -4,10 +4,11 @@ require 'config/config.php';
 
 use App\Domain\Accounting\Account;
 use App\Infrastructure\EventStore\EventStoreConnectionFactory;
+use App\Infrastructure\Database\PdoFactory;
 use App\Infrastructure\Repository\AccountRepository;
 use Psa\EventSourcing\EventStoreIntegration\AggregateReflectionTranslator;
 use Psa\EventSourcing\EventStoreIntegration\EventReflectionTranslator;
-use Psa\EventSourcing\SnapshotStore\InMemoryStore;
+use Psa\EventSourcing\SnapshotStore\PdoSqlStore;
 
 /*******************************************************************************
  * Setting up the event store
@@ -22,7 +23,7 @@ $repository = new AccountRepository(
     $eventStore,
     new AggregateReflectionTranslator(),
     new EventReflectionTranslator(),
-    new InMemoryStore()
+    new PdoSqlStore(PdoFactory::create($config['pdo-mariadb']))
 );
 /*******************************************************************************
  * Create, modify and save the aggregate (with two events)

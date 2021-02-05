@@ -4,12 +4,18 @@ require 'config/config.php';
 
 use App\Infrastructure\EventStore\EventProcessorCollection;
 use App\Infrastructure\EventStore\EventProcessorCollectionFactory;
+use App\Infrastructure\EventStore\EventStoreConnectionFactory;
+use App\Infrastructure\Database\PdoFactory;
 use App\Infrastructure\Repository\Write\PdoWriterRepository;
 use Assert\Assert;
 use Prooph\EventStore\EventStoreCatchUpSubscription;
 use Prooph\EventStore\SubscriptionDropReason;
 use Prooph\EventStore\CatchUpSubscriptionSettings;
 use Prooph\EventStore\ResolvedEvent;
+
+/*******************************************************************************
+ * Shell argument parsing
+ ******************************************************************************/
 
 $options = getopt('', ['stream:', 'checkpoint:']);
 if (!isset($options['stream'])) {
@@ -29,21 +35,19 @@ if (!isset($options['checkpoint'])) {
 echo 'NOTE: If you want to run a category stream you MUST prefix it with `$ce-`!' . PHP_EOL;
 echo '--------------------------------------------------------------------------------' . PHP_EOL;
 
-$pdo = new PDO($config['pdo-mariadb']['dsn'], $config['pdo-mariadb']['user'], $config['pdo-mariadb']['pass']);
-
 /*******************************************************************************
  * Setting up the event processors
  ******************************************************************************/
 $factory = new EventProcessorCollectionFactory(
     new EventProcessorCollection(),
-    new PdoWriterRepository($pdo)
+    new PdoWriterRepository(PdoFactory::create($config['pdo-mariadb']))
 );
 $collection = $factory->build();
 
 /*******************************************************************************
  * Setting up the event store
  ******************************************************************************/
-$eventStore = (new \App\Infrastructure\EventStore\EventStoreConnectionFactory())
+$eventStore = (new EventStoreConnectionFactory())
     ->createHttpClient($config['eventstore']);
 
 $subscription = $eventStore->subscribeToStreamFrom(
@@ -63,7 +67,7 @@ $subscription = $eventStore->subscribeToStreamFrom(
         if ($collection->hasProcessorsForEvent($eventType)) {
             $processors = $collection->getProcessorsForEvent($eventType);
             foreach ($processors as $processor) {
-                $processor($resolvedEvent);
+                $processor($resolvedEvent, $subscription);
             }
         }
     },

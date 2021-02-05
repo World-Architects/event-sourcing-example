@@ -9,13 +9,14 @@ declare(strict_types=1);
 
 namespace App\Domain\Accounting;
 
+use JsonSerializable;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
  * AccountId
  */
-final class AccountId
+final class AccountId implements JsonSerializable
 {
     /**
      * UUID
@@ -55,12 +56,20 @@ final class AccountId
     }
 
     /**
+     * @return string
+     */
+    public function jsonSerialize(): string
+    {
+        return $this->uuid->toString();
+    }
+
+    /**
      * To string
      *
      * @return string
      */
     public function __toString(): string
     {
-        return (string)$this->uuid->toString();
+        return $this->uuid->toString();
     }
 }

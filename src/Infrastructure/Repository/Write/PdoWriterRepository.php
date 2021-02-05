@@ -99,7 +99,7 @@ class PdoWriterRepository
     /**
      * @param \PDOStatement $statement
      */
-    protected function handlePdoError(PDOStatement $statement):void
+    protected function handlePdoError(PDOStatement $statement): void
     {
         if ($statement->errorCode() === PDO::ERR_NONE) {
             return;

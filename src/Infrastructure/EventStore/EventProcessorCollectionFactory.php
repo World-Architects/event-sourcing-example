@@ -8,7 +8,6 @@ use App\Domain\Accounting\Event\AccountCreated;
 use App\Domain\Accounting\Event\CreditAdded;
 use App\Domain\Accounting\Event\DebitAdded;
 use App\Infrastructure\Repository\Write\PdoWriterRepository;
-use PDO;
 use Prooph\EventStore\ResolvedEvent;
 
 /**
@@ -36,7 +35,10 @@ class EventProcessorCollectionFactory
         $this->pdoWriterRepository = $pdoWriterRepository;
     }
 
-    public function build()
+    /**
+     * @return \App\Infrastructure\EventStore\EventProcessorCollection
+     */
+    public function build(): EventProcessorCollection
     {
         $this->addConsoleOutputProcessorToEvents([
             AccountCreated::class,
