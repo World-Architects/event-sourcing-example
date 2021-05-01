@@ -9,6 +9,7 @@ use App\Domain\Accounting\Event\CreditAdded;
 use App\Domain\Accounting\Event\DebitAdded;
 use App\Infrastructure\Repository\Write\PdoWriterRepository;
 use Prooph\EventStore\ResolvedEvent;
+use Ramsey\Uuid\Uuid;
 
 /**
  * Class EventStoreConnectionFactory
@@ -48,21 +49,21 @@ class EventProcessorCollectionFactory
 
         $this->addAccountCreated();
         $this->addCreditAdded();
-        $this->addDeditAdded();
+        $this->addDebitAdded();
 
         return $this->collection;
     }
 
     protected function getDataFromEvent(ResolvedEvent $resolvedEvent): array
     {
-        if ($resolvedEvent->event()->data() === null) {
+        if ($resolvedEvent->event() === null) {
             return [];
         }
 
         return json_decode($resolvedEvent->event()->data(), true, 512, JSON_THROW_ON_ERROR);
     }
 
-    protected function addAccountCreated()
+    protected function addAccountCreated(): void
     {
         $this->collection->add(AccountCreated::class, function (ResolvedEvent $resolvedEvent) {
             $data = $this->getDataFromEvent($resolvedEvent);
@@ -88,7 +89,7 @@ class EventProcessorCollectionFactory
         });
     }
 
-    protected function addDeditAdded(): void
+    protected function addDebitAdded(): void
     {
         $this->collection->add(DebitAdded::class, function (ResolvedEvent $resolvedEvent) {
             $data = $this->getDataFromEvent($resolvedEvent);

@@ -13,13 +13,13 @@ use App\Domain\Accounting\Event\AccountCreated;
 use App\Domain\Accounting\Event\AccountUpdated;
 use App\Domain\Accounting\Event\CreditAdded;
 use App\Domain\Accounting\Event\DebitAdded;
+use App\Domain\AggregateInterface;
 use Psa\EventSourcing\Aggregate\AggregateTrait;
-use JsonSerializable;
 
 /**
  * Account Aggregate
  */
-final class Account implements JsonSerializable
+final class Account implements AggregateInterface
 {
     use AggregateTrait;
 

@@ -1,6 +1,8 @@
 <?php
-require 'vendor/autoload.php';
-require 'config/config.php';
+$ds = DIRECTORY_SEPARATOR;
+
+require 'vendor' . $ds . 'autoload.php';
+require 'config' . $ds . 'config.php';
 
 use App\Domain\Accounting\Account;
 use App\Infrastructure\EventStore\EventStoreConnectionFactory;

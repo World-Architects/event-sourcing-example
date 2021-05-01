@@ -22,7 +22,7 @@ class PdoFactory
      */
     public static function create(array $config): PDO
     {
-        return new \PDO(
+        return new PDO(
             $config['dsn'],
             $config['user'],
             $config['pass']

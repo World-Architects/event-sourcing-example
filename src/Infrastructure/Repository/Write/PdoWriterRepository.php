@@ -21,7 +21,7 @@ class PdoWriterRepository
     /**
      * @var \PDO
      */
-    protected $pdo;
+    protected PDO $pdo;
 
     /**
      * @param \PDO $pdo
@@ -79,6 +79,16 @@ class PdoWriterRepository
         return $query . implode(',', $pieces);
     }
 
+    public function beginTransaction(): void
+    {
+        $this->pdo->beginTransaction();
+    }
+
+    public function commit(): void
+    {
+        $this->pdo->commit();
+    }
+
     /**
      * @param string $table
      * @param array<mixed> $data
@@ -101,11 +111,11 @@ class PdoWriterRepository
      */
     protected function handlePdoError(PDOStatement $statement): void
     {
-        if ($statement->errorCode() === PDO::ERR_NONE) {
+        if ((int)$statement->errorCode() === PDO::ERR_NONE) {
             return;
         }
 
-        throw new PDOException('Query failed', $statement->errorCode());
+        throw new PDOException($statement->errorInfo()[0], $statement->errorCode());
     }
 
     /**
