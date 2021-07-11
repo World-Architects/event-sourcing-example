@@ -14,65 +14,81 @@ use App\Domain\Accounting\AccountId;
 /**
  * Account Created Event
  */
-class AccountCreated
+final class AccountCreated
 {
-	public const EVENT_TYPE = 'Accounting.Account.created';
+    public const EVENT_TYPE = 'Accounting.Account.created';
 
-	/**
-	 * @var string
-	 */
-	protected $aggregateId;
+    /**
+     * @var string
+     */
+    protected string $aggregateId;
 
-	/**
-	 * @var string
-	 */
-	protected $name;
+    /**
+     * @var string
+     */
+    protected string $name;
 
-	/**
-	 * @var string
-	 */
-	protected $description;
+    /**
+     * @var string
+     */
+    protected string $description;
 
-	/**
-	 * @param AccountId $accountId Account Id
-	 * @param string $name Name
-	 * @param string $description Description
-	 * @return self
-	 */
-	public static function create(
-		AccountId $accountId,
-		string $name,
-		string $description
-	) {
-		$event = new self();
-		$event->aggregateId = (string)$accountId;
-		$event->name = $name;
-		$event->description = $description;
+    /**
+     * @var float
+     */
+    protected float $balance;
 
-		return $event;
-	}
+    /**
+     * @param  AccountId $accountId   Account Id
+     * @param  string    $name        Name
+     * @param  string    $description Description
+     * @param  float     $balance     Balance
+     * @return self
+     */
+    public static function create(
+        AccountId $accountId,
+        string $name,
+        string $description,
+        float $balance
+    ) {
+        $event = new self();
+        $event->aggregateId = (string)$accountId;
+        $event->name = $name;
+        $event->description = $description;
+        $event->balance = $balance;
 
-	/**
-	 * @return string
-	 */
-	public function aggregateId(): string
-	{
-		return (string)$this->aggregateId;
-	}
+        return $event;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function name(): string
-	{
-		return $this->name;
-	}
+    /**
+     * @return string
+     */
+    public function aggregateId(): string
+    {
+        return (string)$this->aggregateId;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function description(): string
-	{
-		return $this->description;
-	}
+    /**
+     * @return string
+     */
+    public function name(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function description(): string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @return float
+     */
+    public function balance()
+    {
+        return $this->balance;
+    }
 }

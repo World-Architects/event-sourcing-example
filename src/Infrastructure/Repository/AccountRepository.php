@@ -17,5 +17,5 @@ use Psa\EventSourcing\Aggregate\AggregateRepository;
  */
 class AccountRepository extends AggregateRepository
 {
-	public const AGGREGATE_TYPE = ['Account' => Account::class];
+    public const AGGREGATE_TYPE = ['Account' => Account::class];
 }

@@ -1,51 +1,44 @@
 <?php
-require 'vendor/autoload.php';
-require 'config/config.php';
+$ds = DIRECTORY_SEPARATOR;
+
+require 'vendor' . $ds . 'autoload.php';
+require 'config' . $ds . 'config.php';
 
 use App\Domain\Accounting\Account;
+use App\Infrastructure\EventStore\EventStoreConnectionFactory;
+use App\Infrastructure\Database\PdoFactory;
 use App\Infrastructure\Repository\AccountRepository;
-use Prooph\EventStoreHttpClient\EventStoreConnectionFactory;
-use Prooph\EventStoreHttpClient\ConnectionSettings;
-use Prooph\EventStore\EndPoint;
-use Prooph\EventStore\UserCredentials;
-use Prooph\EventStore\Transport\Http\EndpointExtensions;
 use Psa\EventSourcing\EventStoreIntegration\AggregateReflectionTranslator;
 use Psa\EventSourcing\EventStoreIntegration\EventReflectionTranslator;
-use Psa\EventSourcing\SnapshotStore\InMemoryStore;
+use Psa\EventSourcing\SnapshotStore\PdoSqlStore;
 
 /*******************************************************************************
  * Setting up the event store
  ******************************************************************************/
-$eventStore = EventStoreConnectionFactory::create(
-	new ConnectionSettings(
-		new EndPoint($config['eventstore']['host'], $config['eventstore']['port']),
-		EndpointExtensions::HTTP_SCHEMA,
-		new UserCredentials($config['eventstore']['user'], $config['eventstore']['pass'])
-	)
-);
+$eventStore = (new EventStoreConnectionFactory())
+    ->createHttpClient($config['eventstore']);
 
 /*******************************************************************************
- * Setting up the repository object
+ * Setting up the repository objects
  ******************************************************************************/
 $repository = new AccountRepository(
-	$eventStore,
-	new AggregateReflectionTranslator(),
-	new EventReflectionTranslator(),
-	new InMemoryStore()
+    $eventStore,
+    new AggregateReflectionTranslator(),
+    new EventReflectionTranslator(),
+    new PdoSqlStore(PdoFactory::create($config['pdo-mariadb']))
 );
-
 /*******************************************************************************
  * Create, modify and save the aggregate (with two events)
  ******************************************************************************/
 echo '#1 Creating aggregate...' . PHP_EOL;
 $account = Account::create(
-	'Test',
-	'Test'
+    'Test',
+    'Test'
 );
 
 $account->update(
-	'Updated name',
-	'Updated description'
+    'Updated name',
+    'Updated description'
 );
 echo 'Aggregate created' . PHP_EOL;
 echo PHP_EOL;
@@ -74,9 +67,14 @@ echo PHP_EOL;
  ******************************************************************************/
 echo '#4 Changing aggregate and saving again...' . PHP_EOL;
 $account->update(
-	'After Snapshot',
-	'After Snapshot'
+    'After Snapshot Name',
+    'After Snapshot Description'
 );
+
+$account->addCredit(50.00);
+$account->addDebit(25.00);
+$account->addCredit(50.00);
+
 $repository->saveAggregate($account);
 echo 'Aggregate saved' . PHP_EOL;
 echo PHP_EOL;
@@ -89,7 +87,7 @@ $aggregateId = (string)$account->aggregateId();
 $aggregate = $repository->getAggregate($aggregateId);
 
 echo 'Read aggregate ' . $aggregate->aggregateId() . PHP_EOL;
-echo 'Dumping aggregate object :' . PHP_EOL;
+echo 'Dumping aggregate object:' . PHP_EOL;
 echo PHP_EOL;
 
 echo var_export($aggregate, true);
